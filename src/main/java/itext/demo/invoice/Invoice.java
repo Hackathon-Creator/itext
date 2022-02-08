@@ -1,9 +1,10 @@
 package itext.demo.invoice;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.springframework.stereotype.Service;
 
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -20,22 +21,22 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseField;
-import com.itextpdf.text.pdf.RadioCheckField;
 
 import itext.demo.invoice.bean.BillDetail;
 import itext.demo.invoice.bean.BillSummery;
 import itext.demo.invoice.bean.CandidateDetail;
 import itext.demo.invoice.bean.TransectionDetail;
 
+@Service
 public class Invoice {
   public static final String CREATED_PDF = "src/main/resources/invoice/Invoice.pdf";
-  public static void main(String[] args) {
+  public static String getInvoice(){
   
     try {
+    	// Create new pdf file 
       PdfDocument pdf = new PdfDocument(new PdfWriter(CREATED_PDF));
       Document document = new Document(pdf);
+     
       PdfFont headerFont = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
       PdfFont cellFont = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
       
@@ -214,6 +215,7 @@ public class Invoice {
         // TODO Auto-generated catch block
         e.printStackTrace();
     }  
+    return "Invoice is generated at location :- " +CREATED_PDF;
   }
 public static Cell getCell(String text, TextAlignment alignment) {
     Cell cell = new Cell().add(new Paragraph(text));
