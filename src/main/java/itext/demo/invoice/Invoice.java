@@ -1,10 +1,9 @@
 package itext.demo.invoice;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -21,28 +20,26 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseField;
+import com.itextpdf.text.pdf.RadioCheckField;
 
 import itext.demo.invoice.bean.BillDetail;
 import itext.demo.invoice.bean.BillSummery;
 import itext.demo.invoice.bean.CandidateDetail;
 import itext.demo.invoice.bean.TransectionDetail;
-import itextt.demo.simple.Employee;
 
 public class Invoice {
   public static final String CREATED_PDF = "src/main/resources/invoice/Invoice.pdf";
   public static void main(String[] args) {
-    List<Employee> employees = new ArrayList<Employee>();
-    employees.add(new Employee("Jack", "HR", 12000));
-    employees.add(new Employee("Liza", "IT", 5000));
-    employees.add(new Employee("Jeremy", "Finance", 9000));
-    employees.add(new Employee("Frederick", "Accounts", 8000));
+  
     try {
       PdfDocument pdf = new PdfDocument(new PdfWriter(CREATED_PDF));
       Document document = new Document(pdf);
       PdfFont headerFont = PdfFontFactory.createFont(StandardFonts.TIMES_BOLD);
       PdfFont cellFont = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
       
-      String para3 = "INVOICE";
+      String para3 = "THIRD INVOICE";
       Paragraph paragraph3 = new Paragraph(para3).setTextAlignment(TextAlignment.RIGHT); 
       document.add(paragraph3);
       String para4 = "510-06";
@@ -54,6 +51,8 @@ public class Invoice {
 //      String para1 = "PAYMENT DUE UPON RECEIPT";
       String para2 = "To Ensure propeer credit to your account, enter the amount of any credit vouncher, the amount enclosed or credit card"
       		+ " information and return this portion of the invoice and your remittance for";
+      
+      String address = "\n ETS-Toaching & Learning Division \n P.O Box 6051 \n Princeton, NJ 08541-6051";
 //      Paragraph paragraph1 = new Paragraph(para1).setWidth(250).setFontSize(10).setWidth(UnitValue.createPercentValue(50));             
       Paragraph paragraph2 = new Paragraph(para2).setWidth(UnitValue.createPercentValue(50)).setFontSize(7);    
 //      document.add(paragraph1);
@@ -61,6 +60,7 @@ public class Invoice {
       Table table5 = new Table(1);
       table5.addCell(getCell("PAYMENT DUE UPON RECEIPT", TextAlignment.LEFT));
       table5.addCell(getCell(para2, TextAlignment.LEFT)).setFontSize(7);
+      table5.addCell(getCell(address, TextAlignment.CENTER)).setFontSize(7);
       outer.addCell(table5);
       
       Table innerOuter = new Table(1);
@@ -103,24 +103,30 @@ public class Invoice {
       table1.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 //      table1.setBorder(0);
       BillDetail billDetail = new BillDetail();
-      billDetail.setBillAmount("60");
+      billDetail.setBillAmount("60.00");
       billDetail.setMinusCreditVoucher("");
-      billDetail.setDueAmount("60");
+      billDetail.setDueAmount("60.00");
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Bill Amount:")));
-      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$__________"+billDetail.getBillAmount())).setUnderline());
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$_________________"+billDetail.getBillAmount())).setUnderline());
       
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Minus Enclosed credit voucher(s):")));
-      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$____________"+billDetail.getMinusCreditVoucher())).setUnderline());
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$_____________________"+billDetail.getMinusCreditVoucher())).setUnderline());
       
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(" Amount Due:")));
-      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$__________"+billDetail.getDueAmount())).setUnderline());
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("$_________________"+billDetail.getDueAmount())).setUnderline());
       
 //      Table cashTb=new Table(2);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Make your remittanc payable to")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("the Praxis Series. DO NOT SEND CASH")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
-//      table1.addCell(cashTb);
- 
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Charge Card Account Number")).setTextAlignment(TextAlignment.LEFT)).setFontSize(7);
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Expiration Date")).setTextAlignment(TextAlignment.RIGHT)).setFontSize(7);
+
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("_________________")).setTextAlignment(TextAlignment.LEFT)).setFontSize(7);
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("_________________")).setTextAlignment(TextAlignment.RIGHT)).setFontSize(7);
       
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Cardholder's Signature")).setTextAlignment(TextAlignment.LEFT)).setFontSize(7);
+      table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("")).setTextAlignment(TextAlignment.LEFT)).setFontSize(7);
+
       innerOuter.addCell(table1);
       outer.addCell(innerOuter);
       document.add(outer);
@@ -140,7 +146,7 @@ public class Invoice {
       document.add(new Paragraph(" "));
 //      transectionDetail
       TransectionDetail transectionDetail = new TransectionDetail();
-      Table transTable = new Table(3).useAllAvailableWidth().setHeight(400);
+      Table transTable = new Table(3).useAllAvailableWidth().setHeight(350);
       transTable.addHeaderCell(new Cell()
               .add(new Paragraph("Date")
               .setFont(headerFont)) .setBackgroundColor(ColorConstants.LIGHT_GRAY));
