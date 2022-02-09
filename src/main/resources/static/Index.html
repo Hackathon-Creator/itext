@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>THIRD INVOICE</h1>
+
+<div style="
+    /* align-items: center; */
+    text-align: center;
+    font-size: 28px;
+">
+<p>Click to Get Invoice that will get third invoice</p>
+
+<button onclick="myFunction()" style="color: red;font-weight: bold;/* height: 59%; */width: 9%;">Get Invoice</button>
+<p id="demo"></p>
+<script type="text/javascript">
+function myFunction() {
+    var apiUrl = 'http://localhost:8082/getInvoice';
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': "Bearer " + localStorage.getItem("jwt"),
+            'Accept': 'application/octet-stream'
+        },
+    }).then(response => response.blob())
+    .then(blob => URL.createObjectURL(blob))
+    .then(uril => {
+      var link = document.createElement("a");
+      link.href = uril;
+      link.download = "THIRD INVOICE" + ".pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+}
+</script>
+</div>
+</body>
+</html>

@@ -67,17 +67,7 @@ public class Invoice {
       Table innerOuter = new Table(1);
       
       Table table = new Table(2);
-//      table.setMarginBottom(10);
-//      table.setWidth(UnitValue.createPercentValue(50));
       table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-      // adding header
-//      table.addHeaderCell(new Cell(1, 2)
-//           .setTextAlignment(TextAlignment.CENTER)
-//          
-//           .add(new Paragraph("INVOICE")
-//           .setFont(headerFont)));
-    
-     
      
       table.addHeaderCell(new Cell()
            .add(new Paragraph("Candidate ID Number")
