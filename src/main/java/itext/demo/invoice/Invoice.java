@@ -1,5 +1,6 @@
 package itext.demo.invoice;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,9 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.BaseFont;
 
 import itext.demo.invoice.bean.BillDetail;
 import itext.demo.invoice.bean.BillSummery;
@@ -30,7 +34,7 @@ import itext.demo.invoice.bean.TransectionDetail;
 @Service
 public class Invoice {
   public static final String CREATED_PDF = "src/main/resources/invoice/Invoice.pdf";
-  public static String getInvoice(){
+  public static String getInvoice() throws DocumentException{
   
     try {
     	// Create new pdf file 
@@ -109,6 +113,22 @@ public class Invoice {
 //      Table cashTb=new Table(2);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Make your remittanc payable to")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("the Praxis Series. DO NOT SEND CASH")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
+     
+      BaseFont base = BaseFont.createFont("C:\\Winodws\\fonts\\wingding_0.ttf", BaseFont.IDENTITY_H, false);
+      Font font = new Font(base, 16f, Font.BOLD);
+      char checked='\u00FE';
+      char unchecked='\u00A8';
+
+     
+//
+////      PdfWriter.getInstance(document, new FileOutputStream(filename));
+////
+////      document.open();
+//      // Here is how to add a checked checkbox
+//      document.add(new Paragraph(String.valueOf(checked),font));
+////      Here is an unchecked checkbox
+//      document.add(new Paragraph(String.valueOf(unchecked)));
+      
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Charge Card Account Number")).setTextAlignment(TextAlignment.LEFT)).setFontSize(7);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Expiration Date")).setTextAlignment(TextAlignment.RIGHT)).setFontSize(7);
 

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itextpdf.text.DocumentException;
+
 import itext.demo.invoice.Invoice;
 
 @RestController
@@ -26,7 +28,7 @@ public class InvoiceController {
 	
 	
 	@RequestMapping(value = "/getInvoice",method = RequestMethod.GET,produces = "application/pdf",headers="Accept=*/*")
-	public ResponseEntity<InputStreamResource>  getInvoice() throws FileNotFoundException {
+	public ResponseEntity<InputStreamResource>  getInvoice() throws FileNotFoundException, DocumentException {
 		 
 		invoice.getInvoice();
 		File file = new File("src/main/resources/invoice/Invoice.pdf"); // change to relative path
