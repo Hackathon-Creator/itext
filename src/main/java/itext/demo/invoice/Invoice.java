@@ -114,10 +114,10 @@ public class Invoice {
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Make your remittanc payable to")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
       table1.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("the Praxis Series. DO NOT SEND CASH")).setTextAlignment(TextAlignment.CENTER)).setFontSize(7);
      
-      BaseFont base = BaseFont.createFont("C:\\Winodws\\fonts\\wingding_0.ttf", BaseFont.IDENTITY_H, false);
-      Font font = new Font(base, 16f, Font.BOLD);
-      char checked='\u00FE';
-      char unchecked='\u00A8';
+//      BaseFont base = BaseFont.createFont("C:\\Winodws\\fonts\\wingding_0.ttf", BaseFont.IDENTITY_H, false);
+//      Font font = new Font(base, 16f, Font.BOLD);
+//      char checked='\u00FE';
+//      char unchecked='\u00A8';
 
      
 //
