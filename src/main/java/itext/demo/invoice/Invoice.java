@@ -1,6 +1,5 @@
 package itext.demo.invoice;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +7,8 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -17,14 +18,14 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
 
 import itext.demo.invoice.bean.BillDetail;
 import itext.demo.invoice.bean.BillSummery;
@@ -34,6 +35,7 @@ import itext.demo.invoice.bean.TransectionDetail;
 @Service
 public class Invoice {
   public static final String CREATED_PDF = "src/main/resources/invoice/Invoice.pdf";
+  public static final String LOGO = "src/main/resources/ets.png";
   public static String getInvoice() throws DocumentException{
   
     try {
@@ -157,7 +159,7 @@ public class Invoice {
       document.add(new Paragraph(" "));
 //      transectionDetail
       TransectionDetail transectionDetail = new TransectionDetail();
-      Table transTable = new Table(3).useAllAvailableWidth().setHeight(350);
+      Table transTable = new Table(3).useAllAvailableWidth().setHeight(330);
       transTable.addHeaderCell(new Cell()
               .add(new Paragraph("Date")
               .setFont(headerFont)) .setBackgroundColor(ColorConstants.LIGHT_GRAY));
@@ -218,7 +220,15 @@ public class Invoice {
       
          
          document.add(new Paragraph("______________________________________________________________________________")) ;
-         document.add(new Paragraph("Copyright © 2022 by Educational Testing Service. All rights reserved. ETS, the ETS logos, MEASURING THE POWER OF LEARNING and GRE are registered trademarks of Educational Testing Service (ETS) in the United States and other countries").setFontSize(6));
+      // Creating an ImageData object 
+//         String imageFile = "C:/itextExamples/javafxLogo.jpg"; 
+//         Table buttom = new Table(2).useAllAvailableWidth() ;
+         PdfPTable buttom = new PdfPTable(2);
+         buttom.setWidths(new int[]{1, 2});
+         ImageData data = ImageDataFactory.create(LOGO);
+         Image img = new Image(data).setHeight(15).setWidth(15); 
+         document.add(img);
+         document.add(new Paragraph("Copyright © 2022 by Educational Testing Service. All rights reserved. ETS, the ETS logos, MEASURING THE POWER OF LEARNING and GRE are registered trademarks of Educational Testing Service (ETS) in the United States and other countries").setFontSize(6).setMarginTop(10));
 
       document.close();
     } catch (IOException e) {
